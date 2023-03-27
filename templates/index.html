@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Lista de reuniones de Zoom</title>
+  </head>
+  <body>
+    <h1>Lista de reuniones de Zoom</h1>
+    {% if meetings %}
+    <ul>
+      {% for meeting in meetings %}
+      <li>{{ meeting.topic }} - {{ meeting.start_time }}</li>
+      {% endfor %}
+    </ul>
+    {% else %}
+    <p>No se encontraron reuniones.</p>
+    {% endif %}
+  </body>
+</html>

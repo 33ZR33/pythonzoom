@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		    <title>Lista de Reuniones</title>
+	</head>
+	<body>
+		    <h1>Lista de Reuniones</h1>
+		        <ul>
+				    {% for meeting in meetings_list %}
+				            <li>{{ meeting['topic'] }}</li>
+					        {% endfor %}
+						    </ul>
+	</body>
+</html>
+
+
