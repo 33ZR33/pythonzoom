@@ -1,19 +1,153 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <title>Lista de reuniones de Zoom</title>
-  </head>
-  <body>
-    <h1>Lista de reuniones de Zoom</h1>
-    {% if meetings %}
-    <ul>
-      {% for meeting in meetings %}
-      <li>{{ meeting.topic }} - {{ meeting.start_time }}</li>
-      {% endfor %}
-    </ul>
-    {% else %}
-    <p>No se encontraron reuniones.</p>
-    {% endif %}
-  </body>
+<head>
+	<title>Reuniones de Zoom</title>
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet">
+	<style>
+		body {
+            background-color: #f6f6f6;
+            font-family: 'Montserrat', sans-serif; /* Usar la fuente personalizada */
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 50px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* Agregar sombra */
+        }
+
+        .meetings {
+            margin-top: 30px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 30px;
+        }
+
+        th,
+        td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #00aae4;
+            color: white;
+        }
+
+        td {
+            font-size: 14px;
+        }
+
+        .no-meetings {
+            font-size: 18px;
+            font-style: italic;
+            color: #888;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #00aae4;
+            font-size: 32px;
+        }
+
+        body.dark-mode {
+  background-color: #1c1c1c;
+  color: #fff;
+}
+
+.card.dark-mode {
+  background-color: #2c2c2c;
+  color: #fff;
+}
+	</style>
+</head>
+<body>
+  <header>
+    <h1>Próximas Reuniones de Zoom</h1>
+    <button id="dark-mode-btn">Modo oscuro</button>
+  </header>
+	
+	<table>
+		<thead>
+			<tr>
+				<th>Fecha y hora</th>
+				<th>Nombre de la reunión</th>
+				<th>ID de la reunión</th>
+				<th>Contraseña de la reunión</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for meeting in meetings %}
+			<tr>
+				<td>{{ meeting.start_time }}</td>
+				<td>{{ meeting.topic }}</td>
+				<td>{{ meeting.id }}</td>
+				<td>{{ meeting.password }}</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+	<script>
+		// Función para convertir la fecha y hora
+		function convertToGT(utcDateString) {
+			// Crear un objeto de fecha a partir de la cadena de fecha y hora en UTC
+			var utcDate = new Date(utcDateString);
+
+			// Crear un objeto de fecha en el huso horario de Guatemala
+			var gtDate = new Date(utcDate.toLocaleString("en-US", {timeZone: "America/Guatemala"}));
+
+			// Crear una cadena de fecha y hora en formato legible
+			var dateString = gtDate.toLocaleString('en-US', {
+				year: 'numeric',
+				month: 'long',
+				day: 'numeric',
+				hour: 'numeric',
+				minute: 'numeric',
+				second: 'numeric',
+				hour12: true
+			});
+
+			return dateString;
+		}
+
+		// Obtener todas las celdas de la primera columna de la tabla
+		var dateCells = document.querySelectorAll("table tr td:first-child");
+
+		// Recorre cada celda de fecha y hora y convierta la fecha y hora
+		dateCells.forEach(function(cell) {
+			cell.textContent = convertToGT(cell.textContent);
+		});
+	</script>
+  <script>
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    const darkModeBtn = document.getElementById('dark-mode-btn');
+    darkModeBtn.addEventListener('click', function() {
+      fetch('/dark_mode').then(function() {
+        window.location.reload();
+      });
+    });
+
+    if ('{{ session.get("dark_mode", False) }}' === 'True') {
+      document.body.classList.add('dark-mode');
+      const cardElems = document.querySelectorAll('.card');
+      for (const card of cardElems) {
+        card.classList.add('dark-mode');
+      }
+    }
+  });
+</script>
+
+  </script>
+</body>
 </html>
+
