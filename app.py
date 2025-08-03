@@ -7,11 +7,11 @@ from pytz import timezone
 
 app = Flask(__name__)
 
-API_KEY = 'y39UHybfTHmUbGPFotQ8cg'
-API_SECRET = 'n1VrlxhAU6kXveBYpQHJMWosYhHmEMOnR36Q'
+API_KEY = 'API_KEY'
+API_SECRET = 'API_SECRET'
 
 zoom_client = ZoomClient(api_key=API_KEY, api_secret=API_SECRET)
-user_id="rsmejia@oj.gob.gt"
+user_id="user@domain.com"
 
 @app.route('/')
 def index():
